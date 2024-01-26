@@ -1,4 +1,4 @@
-""" 
+"""
 Layered PDF Merge for LearnMYOG
 
 Combines multi-page A0 pdfs into a single file with Optional Content Groups
@@ -6,7 +6,7 @@ Useful for sewing patterns with multiple size options
 PDF view such as Adobe Acrobat Reader required to view layers
 
 Requires:
-python 3.7    
+python 3.7
 pymupdf - https://pymupdf.readthedocs.io/en/latest/intro.html
     mupdf "brew install mupdf"
     pip install wheel setuptools
@@ -23,8 +23,10 @@ Workings:
 
 import os, time, pprint
 import fitz
+import file_picker as fp
 
 # location for src pdfs
+picked_files = fp.open_file_selection()
 path = "patterns/"
 paths = sorted(os.listdir(path))
 
@@ -32,9 +34,9 @@ paths = sorted(os.listdir(path))
 doc = fitz.open()
 
 
-for i, obj in enumerate(paths): 
+for i, obj in enumerate(paths):
     if obj.endswith('.pdf'):
-        
+
         src = fitz.open(path+obj)
 
         # add empty pages to doc to match page count of source pages
@@ -53,7 +55,7 @@ for i, obj in enumerate(paths):
         # iterate over each page
         for pg in range(len(src)):
             doc.load_page(pg).show_pdf_page(r0, src, pg, oc = xref0)
-            
+
         src.close()
 
 print('------------------------')
@@ -76,7 +78,7 @@ pprint.pprint(doc.metadata)
 
 
 
-doc.save('new_pattern.pdf',  
+doc.save('new_pattern.pdf',
     garbage=3,
     pretty=True,
     deflate=True,
@@ -84,4 +86,3 @@ doc.save('new_pattern.pdf',
     clean=True,)
 
 doc.close()
-
