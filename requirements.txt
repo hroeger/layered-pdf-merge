@@ -1,2 +1,4 @@
 setuptools
+pathlib
+tk
 pymupdf
